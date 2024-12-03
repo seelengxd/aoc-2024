@@ -119,5 +119,4 @@ func main() {
 	} else {
 		fmt.Printf("Part 2: %d\n", part2(grid))
 	}
-
 }

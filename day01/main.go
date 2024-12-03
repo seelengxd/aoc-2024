@@ -72,5 +72,4 @@ func main() {
 	} else {
 		part2(left, right)
 	}
-
 }
