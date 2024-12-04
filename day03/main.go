@@ -12,10 +12,10 @@ import (
 //go:embed input.txt
 var input string
 
-func processInput(input string) *[]string {
+func processInput(input string) []string {
 	lines := make([]string, 0)
 	lines = append(lines, strings.TrimSpace(strings.ReplaceAll(input, "\n", "")))
-	return &lines
+	return lines
 }
 
 func getAnswerNoFilter(line string) (answer int) {
@@ -36,16 +36,16 @@ func getAnswerNoFilter(line string) (answer int) {
 	return answer
 }
 
-func part1(lines *[]string) (answer int) {
-	for _, line := range *lines {
+func part1(lines []string) (answer int) {
+	for _, line := range lines {
 		answer += getAnswerNoFilter(line)
 	}
 	return answer
 }
 
-func part2(lines *[]string) (answer int) {
+func part2(lines []string) (answer int) {
 	re := regexp.MustCompile(`do\(\)(.*?)don't\(\)`)
-	for _, line := range *lines {
+	for _, line := range lines {
 		line = "do()" + line + "don't()"
 		results := re.FindAllStringSubmatch(line, -1)
 

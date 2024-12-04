@@ -11,7 +11,7 @@ import (
 //go:embed input.txt
 var input string
 
-func processInput(input string) *[][]int {
+func processInput(input string) [][]int {
 	grid := make([][]int, 0)
 	for _, line := range strings.Split(input, "\n") {
 		if line == "" {
@@ -29,7 +29,7 @@ func processInput(input string) *[][]int {
 		grid = append(grid, processed_row)
 
 	}
-	return &grid
+	return grid
 
 }
 
@@ -40,10 +40,10 @@ const (
 	DECREASING direction = -1
 )
 
-func iterateReport(report *[]int, ignoredIndex int) func(yield func(int, int) bool) {
+func iterateReport(report []int, ignoredIndex int) func(yield func(int, int) bool) {
 	return func(yield func(int, int) bool) {
 		index := -1
-		for i, v := range *report {
+		for i, v := range report {
 			if i != ignoredIndex {
 				index++
 				if !yield(index, v) {
@@ -55,7 +55,7 @@ func iterateReport(report *[]int, ignoredIndex int) func(yield func(int, int) bo
 	}
 }
 
-func isReportSafeWithIgnore(report *[]int, ignoredIndex int) (safe bool) {
+func isReportSafeWithIgnore(report []int, ignoredIndex int) (safe bool) {
 	direction := INCREASING
 	prev := -1
 	safe = true
@@ -83,23 +83,23 @@ func isReportSafeWithIgnore(report *[]int, ignoredIndex int) (safe bool) {
 	return safe
 }
 
-func isReportSafe(report *[]int) bool {
+func isReportSafe(report []int) bool {
 	return isReportSafeWithIgnore(report, -1)
 }
 
-func part1(grid *[][]int) (answer int) {
-	for _, row := range *grid {
-		if isReportSafe(&row) {
+func part1(grid [][]int) (answer int) {
+	for _, row := range grid {
+		if isReportSafe(row) {
 			answer++
 		}
 	}
 	return answer
 }
 
-func part2(grid *[][]int) (answer int) {
-	for _, row := range *grid {
+func part2(grid [][]int) (answer int) {
+	for _, row := range grid {
 		for i := -1; i < len(row); i++ {
-			if isReportSafeWithIgnore(&row, i) {
+			if isReportSafeWithIgnore(row, i) {
 				answer++
 				break
 			}
