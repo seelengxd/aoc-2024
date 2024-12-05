@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+
+	"github.com/seelengxd/aoc-2024/utils"
 )
 
 //go:embed input.txt
@@ -25,23 +27,7 @@ func processInput(input string) [][]rune {
 const XMAS string = "XMAS"
 const MAS string = "MAS"
 
-type Direction struct {
-	X int
-	Y int
-}
-
-var DIRECTIONS = []Direction{
-	{X: 1, Y: 0},
-	{X: -1, Y: 0},
-	{X: 0, Y: 1},
-	{X: 0, Y: -1},
-	{X: 1, Y: 1},
-	{X: 1, Y: -1},
-	{X: -1, Y: -1},
-	{X: -1, Y: 1},
-}
-
-func traverse(lines [][]rune, index int, direction Direction, x int, y int, target string) bool {
+func traverse(lines [][]rune, index int, direction utils.Direction, x int, y int, target string) bool {
 	if x < 0 || y < 0 || x >= len(lines) || y >= len(lines[0]) {
 		return false
 	}
@@ -55,11 +41,11 @@ func traverse(lines [][]rune, index int, direction Direction, x int, y int, targ
 	}
 }
 
-func traverseXMAS(lines [][]rune, index int, direction Direction, x int, y int) bool {
+func traverseXMAS(lines [][]rune, index int, direction utils.Direction, x int, y int) bool {
 	return traverse(lines, index, direction, x, y, XMAS)
 }
 
-func traverseMAS(lines [][]rune, index int, direction Direction, x int, y int) bool {
+func traverseMAS(lines [][]rune, index int, direction utils.Direction, x int, y int) bool {
 	return traverse(lines, index, direction, x, y, MAS)
 }
 
@@ -67,7 +53,7 @@ func part1(lines [][]rune) (answer int) {
 	for i, line := range lines {
 		for j, char := range line {
 			if char == rune(XMAS[0]) {
-				for _, direction := range DIRECTIONS {
+				for _, direction := range utils.DIRECTIONS {
 					if traverseXMAS(lines, 0, direction, i, j) {
 						answer++
 					}
@@ -83,8 +69,8 @@ func part2(lines [][]rune) (answer int) {
 		for j, char := range line {
 			// suppose (i, j) is the center of MAS cross
 			if char == 'A' {
-				first_line := traverseMAS(lines, 0, Direction{-1, -1}, i+1, j+1) || traverseMAS(lines, 0, Direction{1, 1}, i-1, j-1)
-				second_line := traverseMAS(lines, 0, Direction{-1, 1}, i+1, j-1) || traverseMAS(lines, 0, Direction{1, -1}, i-1, j+1)
+				first_line := traverseMAS(lines, 0, utils.DIRECTIONS["up_left"], i+1, j+1) || traverseMAS(lines, 0, utils.DIRECTIONS["down_right"], i-1, j-1)
+				second_line := traverseMAS(lines, 0, utils.DIRECTIONS["up_right"], i+1, j-1) || traverseMAS(lines, 0, utils.DIRECTIONS["down_left"], i-1, j+1)
 				if first_line && second_line {
 					answer++
 				}
