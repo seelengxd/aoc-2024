@@ -12,12 +12,6 @@ import (
 //go:embed input.txt
 var input string
 
-func processInput(input string) []string {
-	lines := make([]string, 0)
-	lines = append(lines, strings.TrimSpace(strings.ReplaceAll(input, "\n", "")))
-	return lines
-}
-
 func getAnswerNoFilter(line string) (answer int) {
 	re := regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
 	results := re.FindAllStringSubmatch(line, -1)
@@ -36,23 +30,20 @@ func getAnswerNoFilter(line string) (answer int) {
 	return answer
 }
 
-func part1(lines []string) (answer int) {
-	for _, line := range lines {
-		answer += getAnswerNoFilter(line)
-	}
-	return answer
+func part1(line string) (answer int) {
+	return getAnswerNoFilter(line)
 }
 
-func part2(lines []string) (answer int) {
+func part2(line string) (answer int) {
 	re := regexp.MustCompile(`do\(\)(.*?)don't\(\)`)
-	for _, line := range lines {
-		line = "do()" + line + "don't()"
-		results := re.FindAllStringSubmatch(line, -1)
 
-		for _, result := range results {
-			answer += getAnswerNoFilter(result[0])
-		}
+	line = "do()" + strings.ReplaceAll(line, "\n", "") + "don't()"
+	results := re.FindAllStringSubmatch(line, -1)
+
+	for _, result := range results {
+		answer += getAnswerNoFilter(result[0])
 	}
+
 	return answer
 }
 
@@ -61,10 +52,9 @@ func main() {
 	flag.IntVar(&part, "part", 1, "part 1 or 2")
 	flag.Parse()
 
-	grid := processInput(input)
 	if part == 1 {
-		fmt.Printf("Part 1: %d\n", part1(grid))
+		fmt.Printf("Part 1: %d\n", part1(input))
 	} else {
-		fmt.Printf("Part 2: %d\n", part2(grid))
+		fmt.Printf("Part 2: %d\n", part2(input))
 	}
 }

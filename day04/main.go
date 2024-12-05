@@ -4,8 +4,8 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"strings"
 
+	"github.com/seelengxd/aoc-2024/parse"
 	"github.com/seelengxd/aoc-2024/utils"
 )
 
@@ -13,15 +13,7 @@ import (
 var input string
 
 func processInput(input string) [][]rune {
-	lines := make([][]rune, 0)
-	for _, line := range strings.Split(strings.TrimSpace(input), "\n") {
-		row := make([]rune, len(line))
-		for i, char := range line {
-			row[i] = char
-		}
-		lines = append(lines, row)
-	}
-	return lines
+	return parse.ParseGrid(input)
 }
 
 const XMAS string = "XMAS"

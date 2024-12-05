@@ -33,10 +33,9 @@ func processInput(input string) (left []int, right []int) {
 	return left, right
 }
 
-func part1(left []int, right []int) {
+func part1(left []int, right []int) (answer int) {
 	sort.Ints(left)
 	sort.Ints(right)
-	answer := 0
 	for i, leftNumber := range left {
 		rightNumber := right[i]
 		difference := rightNumber - leftNumber
@@ -46,19 +45,18 @@ func part1(left []int, right []int) {
 			answer += difference
 		}
 	}
-	fmt.Println(answer)
+	return answer
 }
 
-func part2(left []int, right []int) {
+func part2(left []int, right []int) (answer int) {
 	rightCounter := make(map[int]int)
 	for _, rightNumber := range right {
 		rightCounter[rightNumber]++
 	}
-	answer := 0
 	for _, number := range left {
 		answer += number * rightCounter[number]
 	}
-	fmt.Println(answer)
+	return answer
 }
 
 func main() {
@@ -67,9 +65,10 @@ func main() {
 	flag.Parse()
 
 	left, right := processInput(input)
+
 	if part == 1 {
-		part1(left, right)
+		fmt.Printf("Part 1: %d\n", part1(left, right))
 	} else {
-		part2(left, right)
+		fmt.Printf("Part 2: %d\n", part2(left, right))
 	}
 }

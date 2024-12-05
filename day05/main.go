@@ -4,8 +4,9 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"strconv"
 	"strings"
+
+	"github.com/seelengxd/aoc-2024/parse"
 )
 
 //go:embed input.txt
@@ -31,21 +32,9 @@ func processInput(input string) ([]OrderingRule, []Update) {
 	}
 
 	for _, line := range strings.Split(updateString, "\n") {
-		splitLine := strings.Split(line, ",")
-		update := make(Update, len(splitLine))
-		for i, numStr := range splitLine {
-			if numStr == "" {
-				continue
-			}
-			num, err := strconv.Atoi(numStr)
-			if err != nil {
-				panic(fmt.Sprintf("%v was not a number", numStr))
-			}
-			update[i] = num
-		}
-
-		updates = append(updates, update)
+		updates = append(updates, parse.ParseIntSlice(line, ","))
 	}
+
 	return orderingRules, updates
 }
 
