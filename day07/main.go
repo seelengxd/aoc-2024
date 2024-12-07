@@ -39,7 +39,9 @@ func checkCalibration(calibration Calibration, operators []func(int, int) int) b
 	for _, num := range calibration.nums[1:] {
 		for possibleNum := range possible {
 			for _, operator := range operators {
-				nextPossible[operator(possibleNum, num)] = true
+				if nextNum := operator(possibleNum, num); nextNum <= calibration.target {
+					nextPossible[nextNum] = true
+				}
 			}
 		}
 		possible, nextPossible = nextPossible, map[int]bool{}
